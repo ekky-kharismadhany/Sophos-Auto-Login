@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.office.sophos-auto-login</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <!-- Adjust path to your Python installation -->
+        <string>/usr/local/bin/python3</string>
+        <string>-m</string>
+        <string>sophos_auto_login</string>
+        <string>run</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <!-- Adjust to where .env and recorded_login.py live -->
+    <string>/opt/sophos-auto-login</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <!-- Cron mode: run every 60 seconds -->
+    <key>StartInterval</key>
+    <integer>60</integer>
+
+    <!-- Alternatively, for periodic mode (runs once, loops internally):
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    Remove StartInterval if using periodic mode. Set SOPHOS_RUN_MODE=periodic in .env.
+    -->
+
+    <key>StandardOutPath</key>
+    <string>/var/log/sophos-auto-login/stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/var/log/sophos-auto-login/stderr.log</string>
+</dict>
+</plist>

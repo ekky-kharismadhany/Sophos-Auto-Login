@@ -1,0 +1,20 @@
+[project]
+name = "sophos-auto-login"
+version = "0.1.0"
+description = "Automatic re-authentication for Sophos captive portal"
+requires-python = ">=3.10"
+dependencies = [
+    "playwright>=1.40",
+    "python-dotenv>=1.0",
+    "httpx>=0.25",
+]
+
+[project.scripts]
+sophos-auto-login = "sophos_auto_login.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sophos_auto_login"]
