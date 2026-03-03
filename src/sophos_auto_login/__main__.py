@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 
 from dotenv import load_dotenv
@@ -6,6 +7,7 @@ from dotenv import load_dotenv
 from sophos_auto_login.config import load_config
 from sophos_auto_login.logger import setup_logging
 from sophos_auto_login.recorder import record
+from sophos_auto_login.portal import perform_login
 from sophos_auto_login.runner import run
 
 
@@ -20,6 +22,7 @@ def main() -> None:
 
     sub.add_parser("record", help="Record login steps via Playwright codegen")
     sub.add_parser("run", help="Check connectivity and login if needed (default)")
+    sub.add_parser("test", help="Run login directly, skipping connectivity check")
 
     args = parser.parse_args()
     command = args.command or "run"
@@ -35,6 +38,14 @@ def main() -> None:
         log_level = os.environ.get("SOPHOS_LOG_LEVEL", "INFO").upper()
         setup_logging(log_level)
         record(portal_url, script_path)
+    elif command == "test":
+        config = load_config()
+        setup_logging(config.log_level)
+        logging.getLogger(__name__).info(
+            "Test mode: skipping connectivity check, running login directly."
+        )
+        success = perform_login(config)
+        raise SystemExit(0 if success else 1)
     else:
         config = load_config()
         setup_logging(config.log_level)
